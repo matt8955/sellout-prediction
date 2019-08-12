@@ -14,12 +14,7 @@ def scrape_ticketmaster(state, size, page_num):
     url = 'https://app.ticketmaster.com/discovery/v2/events.json?countryCode=US&classificationName=music'
     req = requests.get(f'{url}&apikey={keys.ticketmaster}&size={size}&page={page_num}&stateCode={state}')
     x = json.loads(req.text)
-    try:
-        df = pd.DataFrame(x['_embedded']['events'])
-        clean_frames.append(df)
-        return df
-    except:
-        fails.append((state,page_num))
+    return x
 
 
 def drop_nontm(df):
