@@ -5,3 +5,4 @@ __pycache__/
 plan.txt
 *.db
 data/gigography.csv
+scraping/gigography.csv
