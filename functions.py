@@ -15,16 +15,17 @@ def scrape_ticketmaster(state, size, page_num):
     req = requests.get(f'{url}&apikey={keys.ticketmaster}&size={size}&page={page_num}&stateCode={state}')
     x = json.loads(req.text)
     try:
-        df = pd.DataFrame(frame['_embedded']['events'])
+        df = pd.DataFrame(x['_embedded']['events'])
         clean_frames.append(df)
+        return df
     except:
-        fails.append(frame)
-    return df
+        fails.append((state,page_num))
+    
 
 def drop_nontm(df):
     df.copy()
     df['url'] = df.url.apply(lambda x: x if x[12:24] == 'ticketmaster' else np.nan)
-    df.url.dropna(inplace=True)
+    df.dropna(subset=['url'],inplace=True)
     return df
 
 def drop_columns(df):
