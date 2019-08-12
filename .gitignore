@@ -4,3 +4,4 @@ untitled.txt
 __pycache__/
 plan.txt
 *.db
+data/gigography.csv
