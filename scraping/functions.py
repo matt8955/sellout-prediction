@@ -85,8 +85,6 @@ def unpack_price(df):
     '''unpacks price column returns a df'''
     #unpack price
     df = df.copy()
-    df['priceRanges'].fillna(1, inplace=True) # if no pricerange json in cell then event sold out
-    df['sold_out'] = df.priceRanges.apply(lambda x: x if x==1 else 0)
     df['price_min'] = df.priceRanges.apply(lambda x: try_minmax(x,'min'))
     df['price_max'] = df.priceRanges.apply(lambda x: try_minmax(x, 'max'))
     df.drop(columns=['priceRanges'],inplace=True)
