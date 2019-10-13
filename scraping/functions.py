@@ -23,24 +23,6 @@ def drop_nontm(df):
     df.dropna(subset=['url'],inplace=True)
     return df
 
-def drop_columns(df):
-    '''drops the columns in the df not needed for data analysis'''
-    df = df.copy()
-    try:
-        df.ticketLimit
-    except:
-        df['ticketLimit'] = np.nan
-    try:
-        df.priceRanges
-    except:
-        df['priceRanges'] = np.nan
-    df= df[['name', 'url', 'locale', 'sales', 'dates', 'classifications', 'priceRanges', 'ticketLimit', '_embedded']]
-    return df
-def try_apply(x, col):
-    try:
-        return x[0][col]['name']
-    except:
-        return np.nan
 
 def unpack_classifications(df):
     '''unpacks the json classifications and adds petitinent columns to df'''
@@ -140,18 +122,6 @@ def unpack_market(df):
         df['markets'] = np.nan
     df['num_markets'] = df['markets'].apply(lambda x: num_of_markets(x))
     df.drop(columns = ['markets'],inplace=True)
-    return df
-
-def final_cleanup(df):
-    '''clean up the rest of the dataframe'''
-    df = df.copy()
-    df.drop(columns = ['_embedded', 'state.name','locale','dates'],inplace = True)
-    df.rename(columns = {'name_x' : 'event_name','public.startDateTime' : 'onsale_date',
-          'public.endDateTime' : 'event_date', 'presales' : 'is_presale',
-          'name_y' : 'venue_name','city.name' : 'city',
-          'state.stateCode': 'state', 'country.countryCode': 'country',
-          'address.line1' : 'address', 'location.longitude' : 'longitude',
-          'location.latitude' : 'latitude'}, inplace=True)
     return df
 
 def to_sql(df, table, engine):
